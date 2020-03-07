@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+<head>
+  <title>Gauges</title>
+  <meta charset="utf-8">
+  <style>
+    body {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 768px;
+    }
+  </style>
+  <script src="../js/htmlGauges.js"></script>
+  <script>
+    // Make these global for the start/stop functions.
+    var automobileInterval = null;
+    var hifiInterval = null;
+
+    // Simulate engine rpms for a 5-speed manual idling at 500 with a rev limit of 6500.
+    function revs(speed) {
+      // Speed goes from 0 - 100, shifting every 20.
+      let rpms = 300 * (speed % 20) + 800;
+      return rpms;
+    }
+
+  </script>
+</head>
+
+<body>
+
+  <header>
+    <h1>Some Sample Gauges with Animation</h1>
+    <hr>
+  </header>
+  <nav>
+  </nav>
+
+  <main>
+    <h2>Automobile Gauges</h2>
+    <p>Vehicle is idling at 800 RPM and goes through 5 gears as it accelerates to 100 MPH.</p>
+    <canvas id="tachometer" height="200px" width="200px"></canvas>
+    <canvas id="speedometer" height="200px" width="200px"></canvas>
+    <script>
+      tachometer = new AnalogGauge('tachometer', 'RPM x1000', 0.1);  // Idling revs of 800 on a 0-8000 scale.
+      speedometer = new AnalogGauge('speedometer', 'MPH', 0);
+    </script>
+    <form>
+      <input id="go"
+        onclick="if (!automobileInterval) { automobileInterval = setInterval(function () { let e = document.getElementById('speedSpinner'); speedometer.draw(e.value / 100); tachometer.draw(revs(e.value) / 8000); if (++e.value >= 100) e.value = 0; }, 50); }"
+        type="button" value="Go">
+      <input id="stop" onclick="clearInterval(automobileInterval);" type="button" value="Stop">
+      <input id="reset"
+        onclick="document.getElementById('speedSpinner').value = 0; speedometer.draw(0); tachometer.draw(0.1);"
+        type="button" value="Reset">
+      <input id="speedSpinner"
+        onchange="let speed=document.getElementById('speedSpinner').value; speedometer.draw(speed/100); tachometer.draw(revs(speed)/8000);"
+        type="number" min=0 max=100 step=1 value=0>
+    </form>
+
+    <h2>Hi-Fi Gauges</h2>
+    <p>Now playing: <i>Led Zeppelin - Dazed and Confused.</i></p>
+    <canvas id="vu-left" height="100px" width="200px" style="border: 1px solid black;"></canvas>
+    <canvas id="vu-right" height="100px" width="200px" style="border: 1px solid black;"></canvas>
+    <script>
+      var vuLeft = new AnalogGauge('vu-left', 'VU Left', 0);
+      var vuRight = new AnalogGauge('vu-right', 'VU Right', 0);
+    </script>
+    <form>
+      <input id="go"
+        onclick="if (!hifiInterval) { hifiInterval = setInterval(function () { let e = document.getElementById('hifiSpinner'); vuLeft.draw(e.value / 100); vuRight.draw(e.value / 100); if (--e.value < 50) e.value = 85; }, 10); }"
+        type="button" value="Go">
+      <input id="stop" onclick="clearInterval(hifiInterval);" type="button" value="Stop">
+      <input id="reset" onclick="document.getElementById('hifiSpinner').value = 0; vuLeft.draw(0); vuRight.draw(0)"
+        type="button" value="Reset">
+      <input id="hifiSpinner"
+        onchange="let vu=document.getElementById('hifiSpinner').value; vuLeft.draw(vu/100); vuRight.draw(vu/100);"
+        type="number" min=0 max=100 step=1 value=0>
+    </form>
+  </main>
+
+  <aside>
+  </aside>
+
+  <footer>
+    <hr>
+    <p><a href="https://github.com/DavesCodeMusings/htmlGauges">htmlGauges GitHub Page</a></p>
+  </footer>
+
+</body>
+
+</html>
