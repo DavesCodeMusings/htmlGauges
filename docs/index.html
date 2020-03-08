@@ -76,12 +76,15 @@
       &lt;button onclick='thermometerGauge.draw(0.67);'&gt;Heat it up.&lt;button&gt;
       ...
     </pre>
+    <p>Adjust the canvas dimensions to create different style gauges.  Square canvases always get a round, 270 deflection
+      gauge.  Canvases that are not square, either taller than wide or wider than tall, will draw a gauge with 90 degrees
+      of deflection.  The anti-clockwise parameter will flip the gauge's orientation and needle movement.
+    </p>
     <p>That's all there is to it.</p>
 
     <h2>What's next?</h2>
     <p>
-      So far, only square canvases and landscape-oriented rectangular canvases are supported. I plan to add support
-      for portrait mode gauges as well as long, linear gauges similar to frequency scales on old, analog FM tuners.
+      I plan to add support for linear gauges similar to frequency scales on old, analog FM tuners.
     </p>
   </main>
 
