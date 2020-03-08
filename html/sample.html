@@ -10,8 +10,20 @@
       font-family: sans-serif;
       margin-left: auto;
       margin-right: auto;
-      max-width: 768px;
+      max-width: 1024px;
     }
+    header, footer {
+      clear: both;
+    }
+    nav, aside {
+      float: left;
+      width: 20%;
+    }
+    main {
+      float: left;
+      width:80%;
+    }
+
   </style>
   <script src="../js/htmlGauges.js"></script>
   <script>
@@ -104,9 +116,24 @@
       var godzilla = new AnalogGauge('godzilla', 'Godzilla Probability', 0.75);
       var radiation = new AnalogGauge('radiation', 'Radiation', 0.75, true);
     </script>
+
+    <h2>Linear Gauges</h2>
+    <p>Behold, the classic 1970s FM receiver.</p>
+    <canvas id="sig-strength" height=75 width=100 style="border: 1px solid black;"></canvas>
+    <canvas id="fm" height=75 width=600 style="border: 1px solid black;"></canvas>
+    <script>
+      new AnalogGauge('sig-strength', 'Signal', 0.85);
+      new LinearGauge('fm', 'FM (MHz)', 0.67);
+    </script>
   </main>
 
   <aside>
+    <h2>Linear Gauge</h2>
+    <p>Vertical Barometer</p>
+    <canvas id="mm-hg" height=600 width=75 style="border: 1px solid black;"></canvas>
+    <script>
+      new LinearGauge('mm-hg', 'mm Hg', 0.76);
+    </script>
   </aside>
 
   <footer>

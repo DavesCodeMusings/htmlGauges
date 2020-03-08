@@ -44,10 +44,13 @@
       can be seen at the top of this web page. For canvases of rectangular aspect ratio, the gauge rendering will be a
       smaller 90 degree deflection to represent full scale. See the example below.
     </p>
-    <canvas id="sigCenter" height=75, width=150></canvas> <canvas id="sigStrength" height=75 width=150></canvas>
+    <canvas id="sigCenter" height=50, width=100 style="border: 1px solid black;"></canvas>
+    <canvas id="sigStrength" height=50 width=100 style="border: 1px solid black;"></canvas>
+    <canvas id="tuning" height="50" width=500 style="border: 1px solid black;"></canvas>
     <script>
-      new AnalogGauge('sigCenter', 'Tuning', 0.50);
-      new AnalogGauge('sigStrength', 'Signal Strength', 0.85);
+      new AnalogGauge('sigCenter', 'Tuning', 0.50, true);
+      new AnalogGauge('sigStrength', 'Signal Strength', 0.85, true);
+      new LinearGauge('tuning', 'FM MHz', 0.75);
     </script>
     <p><i>Fig 1 &mdash; Simulating an old, analog FM tuner.</i></p>
     <h2>Using HTML Gauges</h2>

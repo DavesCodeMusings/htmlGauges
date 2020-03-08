@@ -1,15 +1,14 @@
 /** @class AnalogGauge - draw an analog gauge on an html canvas */
 class AnalogGauge {
   /**
-   * Create an analog gauge on an html canvas.
+   * Create a rounded analog gauge on an html canvas.
    * 
    * @constructor
    * @author https://github.com/DavesCodeMusings/htmlGauges
-   * @param {string} canvasId   The id of the canvas to draw upon.
-   * @param {string} label      A text label written on the gauge face.
-   * @param {number} deflection The initial position of the indicator needle.
-   * @param {boolean} antiClockwise
-   *                            Flips gauge and needle travel direction.
+   * @param {string} canvasId       The id of the canvas to draw upon.
+   * @param {string} label          A text label written on the gauge face.
+   * @param {number} deflection     The initial position of the indicator needle.
+   * @param {boolean} antiClockwise Flips gauge and needle travel direction.
    */
   constructor(canvasId, label, deflection, antiClockwise) {
     this.canvasId = canvasId;
@@ -37,7 +36,7 @@ class AnalogGauge {
       scaleFull = 2.25 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = height / 2;
-      needleLength = height / 2;
+      needleLength = 0.95 * (height / 2);
       labelY = height * 0.75;
     }
     else if (height < width && !this.antiClockwise) {
@@ -45,7 +44,7 @@ class AnalogGauge {
       scaleFull = 1.75 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = height;
-      needleLength = height;
+      needleLength = 0.95* height;
       labelY = height / 2;
     }
     else if (height < width && this.antiClockwise) {
@@ -53,7 +52,7 @@ class AnalogGauge {
       scaleFull = 0.25 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = 0;
-      needleLength = height;
+      needleLength = 0.95 * height;
       labelY = height / 2;
     }
     else if (height > width && !this.antiClockwise) {
@@ -61,7 +60,7 @@ class AnalogGauge {
       scaleFull = 1.25 * Math.PI;
       scaleCenterX = width;
       scaleCenterY = height / 2;
-      needleLength = width;
+      needleLength = 0.95 * width;
       labelY = height / 2;
     }
     else if (height > width && this.antiClockwise) {
@@ -69,7 +68,7 @@ class AnalogGauge {
       scaleFull = 1.75 * Math.PI;
       scaleCenterX = 0;
       scaleCenterY = height / 2;
-      needleLength = width;
+      needleLength = 0.95 * width;
       labelY = height / 2;
     }
 
@@ -108,6 +107,94 @@ class AnalogGauge {
     context.strokeStyle = 'black';
     context.fillStyle = 'black';
     context.arc(scaleCenterX, scaleCenterY, capRadius, 0, 2 * Math.PI);
+    context.stroke();
+    context.fill();
+  }
+}
+
+class LinearGauge {
+  /**
+   * Create a linear gauge on an html canvas.
+   * 
+   * @constructor
+   * @author https://github.com/DavesCodeMusings/htmlGauges
+   * @param {string} canvasId       The id of the canvas to draw upon.
+   * @param {string} label          A text label written on the gauge face.
+   * @param {number} deflection     The initial position of the indicator needle.
+   */
+  constructor(canvasId, label, deflection) {
+    this.canvasId = canvasId;
+    this.label = label;
+    if (deflection === undefined) deflection = 0;
+    this.deflection = deflection;
+    this.draw(this.deflection);
+  }
+  draw(deflection) {
+    let context = document.getElementById(this.canvasId).getContext("2d");
+    let height = document.getElementById(this.canvasId).height;
+    let width = document.getElementById(this.canvasId).width;
+    let scaleStartX, scaleStartY, scaleEndX, scaleEndY, labelY, needleStartX, needleStartY, needleEndX, needleEndY = 0;
+
+    if (height < width) {
+      scaleStartX = 0.01 * width;
+      scaleStartY = height / 2;
+      scaleEndX = 0.99 * width;
+      scaleEndY = height / 2;
+      needleStartX = scaleEndX * deflection;
+      needleStartY = 0;
+      needleEndX = needleStartX;
+      needleEndY = 0.95 * height;
+
+      labelY = 0.75 * height;
+    }
+    else {
+      scaleStartX = width / 2;
+      scaleStartY = 0.01 * height;
+      scaleEndX = width / 2;
+      scaleEndY = 0.99 * height;
+      needleStartX = 0;
+      needleStartY = scaleEndY - scaleEndY * deflection;
+      needleEndX = width * 0.95;
+      needleEndY = needleStartY;
+      labelY = 0.95 * height;
+    }
+
+    // Clear the canvas.
+    context.clearRect(0, 0, width, height);
+
+    // Draw the scale.
+    context.beginPath();
+    context.lineWidth = 3;
+    context.fillStyle = 'white';
+    context.strokeStyle = 'lightgray';
+    context.moveTo(scaleStartX, scaleStartY);
+    context.lineTo(scaleEndX, scaleEndY);
+    context.fill();
+    context.stroke();
+
+    // Label it.
+    context.beginPath();
+    context.fillStyle = 'black';
+    context.textBaseline = 'bottom';
+    context.textAlign = 'center';
+    context.fillText(this.label, width / 2, labelY);
+
+    // Draw the needle.
+    context.beginPath();
+    context.lineWidth = 3;
+    context.strokeStyle = 'red';
+    context.lineCap = 'round';
+    context.moveTo(needleStartX, needleStartY);
+    context.lineTo(needleEndX, needleEndY);
+    context.stroke();
+
+    // Cover the needle with a proportionally-sized cap.
+    //let capRadius = Math.max(Math.round(needleLength / 20), 4);
+    let capRadius = 5;
+    context.beginPath();
+    context.strokeStyle = 'black';
+    context.fillStyle = 'black';
+    context.arc(needleStartX, needleStartY, capRadius, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
   }
