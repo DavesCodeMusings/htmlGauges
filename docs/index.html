@@ -88,7 +88,11 @@
 
     <h2>What's next?</h2>
     <p>
-      Numeric labels on the scale, at least at the endpoints, but ideally at evenly spaced locations if desired.
+      Numeric labels on the scale, at least at the endpoints, but ideally at evenly spaced locations if desired.  This
+      will probably result in restructuring the constructor parameters as 
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">rest
+      parameters</a>, making the first string (canvasId) required, and interpreting any following strings as the gauge
+      label followed by labels to be placed on the scale at end points and equal intervals between.
     </p>
   </main>
 
