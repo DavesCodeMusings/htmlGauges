@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>HTML Gauges</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <script src="htmlGauges.js"></script>
+</head>
+
+<body>
+  <header>
+    <canvas id='boost' height=200 width=200></canvas> <canvas id='rpm' height=300 width=300></canvas> <canvas id='mph'
+      height=200 width=200></canvas>
+    <p><b>HTML Gauges &mdash; Analog gauges to take any HTML page up to eleven.</b></p>
+    <script>
+      new AnalogGauge('boost', 'Boost', 0.95);
+      new AnalogGauge('rpm', 'RPM x1000', 0.65);
+      new AnalogGauge('mph', 'MPH', 0.80);
+    </script>
+  </header>
+  <nav>
+    <h2>Navigation</h2>
+    <ul>
+      <li>About</li>
+      <li><a href="https://github.com/DavesCodeMusings/htmlGauges/" target="_blank">htmlGauges GitHub Repo</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>About</h2>
+    <p>The HTML Gauges project came about when I started working on the WeeNAS system dashboard. It seems all the cool
+      kids are using analog gauges to give a visual representation of system data. I'm sure there are other libraries
+      out there that do the same thing as HTML Gauges, and maybe even do a better job of it, but I'm the type of person
+      who would rather write my own code than cobble together other peoples.</p>
+
+    <h2>What can it do?</h2>
+    <p>
+      HTML Gauges is a JavaScript class that can draw and update analog dial-type gauges on an HTML 5 canvas. It will
+      use the aspect ratio of the canvas to determine how to draw the gauge. A square canvas, where height and width
+      are equal, gets a big round gauge with 270 degrees of zero to full scale needle deflection. Examples of these
+      can be seen at the top of this web page. For canvases of rectangular aspect ratio, the gauge rendering will be a
+      smaller 90 degree deflection to represent full scale. See the example below.
+    </p>
+    <canvas id="sigCenter" height=75, width=150></canvas> <canvas id="sigStrength" height=75 width=150></canvas>
+    <script>
+      new AnalogGauge('sigCenter', 'Tuning', 0.50);
+      new AnalogGauge('sigStrength', 'Signal Strength', 0.85);
+    </script>
+    <p><i>Fig 1 &mdash; Simulating an old, analog FM tuner.</i></p>
+    <h2>Using HTML Gauges</h2>
+    <p>
+      Using HTML Gauges to take your own web page up to eleven is relatively simple.
+    </p>
+    <ol>
+      <li>Copy the htmlGauges.js JavaScript file to your site and link it with a script tag in the page header.</li>
+      <li>Create a canvas element with the dimensions that you want for your analog gauge and give it an id attribute.
+      </li>
+      <li>Use JavaScript to create a new instance of AnalogGauge, giving it the id of the canvas as a parameter.
+        (Optionally supply a label and initial value.)</li>
+      <li>Call the draw() method with a number between 0 and 1 to move the indicator needle between zero and full-scale
+        deflection.</li>
+    </ol>
+    <p>Here's an abreviated example of how to create and update a temperature gauge:</p>
+    <pre>
+      ...
+      &lt;head&gt;
+      &lt;script src='htmlGauges.js'&gt;&lt;/script&gt;
+      ...
+      &lt;body&gt;
+      &lt;canvas id='thermometerCanvas' height=100 width=100&gt;
+      &lt;script&gt;thermometerGauge = new AnalogGauge('thermometerCanvas', 'Temperature', 0.33);&lt;script&gt;
+      ...
+      &lt;button onclick='thermometerGauge.draw(0.67);'&gt;Heat it up.&lt;button&gt;
+      ...
+    </pre>
+    <p>That's all there is to it.</p>
+
+    <h2>What's next?</h2>
+    <p>
+      So far, only square canvases and landscape aspect-ratio rectangular canvases are supported. I plan to add support
+      for portrait aspect-ratio gauges as well as long, linear gauges similar to frequency scales on old, analog FM
+      tuners.
+    </p>
+  </main>
+
+  <aside>
+  </aside>
+
+  <footer>
+    <p>HTML Gauges is copyright (c)2020 David Horton. I'm still debating the exact free-software license I want to use.
+    </p>
+  </footer>
+</body>
+
+</html>
