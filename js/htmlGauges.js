@@ -102,10 +102,12 @@ class AnalogGauge {
     context.lineTo(scaleCenterX + needleLength * Math.cos(radians), scaleCenterY + needleLength * Math.sin(radians));
     context.stroke();
 
-    // Cap the needle.
+    // Cover the needle with a proportionally-sized cap.
+    let capRadius = Math.max(Math.round(needleLength / 20), 4);
     context.beginPath();
     context.strokeStyle = 'black';
-    context.arc(scaleCenterX, scaleCenterY, 5, 0, 2 * Math.PI);
+    context.fillStyle = 'black';
+    context.arc(scaleCenterX, scaleCenterY, capRadius, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
   }

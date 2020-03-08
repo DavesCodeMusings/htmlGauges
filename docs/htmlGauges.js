@@ -8,12 +8,16 @@ class AnalogGauge {
    * @param {string} canvasId   The id of the canvas to draw upon.
    * @param {string} label      A text label written on the gauge face.
    * @param {number} deflection The initial position of the indicator needle.
+   * @param {boolean} antiClockwise
+   *                            Flips gauge and needle travel direction.
    */
-  constructor(canvasId, label, deflection) {
+  constructor(canvasId, label, deflection, antiClockwise) {
     this.canvasId = canvasId;
     this.label = label;
     if (deflection === undefined) deflection = 0;
     this.deflection = deflection;
+    if (antiClockwise === undefined) antiClockwise = false;
+    this.antiClockwise = antiClockwise;
     this.draw(this.deflection);
   }
 
@@ -29,19 +33,43 @@ class AnalogGauge {
 
     // Square canvas gets a big round gauge. Rectangles get half.
     if (height === width) {
-      scaleFull = 2.25 * Math.PI;
       scaleZero = 0.75 * Math.PI;
+      scaleFull = 2.25 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = height / 2;
       needleLength = height / 2;
       labelY = height * 0.75;
     }
-    else if (height < width) {
+    else if (height < width && !this.antiClockwise) {
       scaleZero = 1.25 * Math.PI;
       scaleFull = 1.75 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = height;
       needleLength = height;
+      labelY = height / 2;
+    }
+    else if (height < width && this.antiClockwise) {
+      scaleZero = 0.75 * Math.PI;
+      scaleFull = 0.25 * Math.PI;
+      scaleCenterX = width / 2;
+      scaleCenterY = 0;
+      needleLength = height;
+      labelY = height / 2;
+    }
+    else if (height > width && !this.antiClockwise) {
+      scaleZero = 0.75 * Math.PI;
+      scaleFull = 1.25 * Math.PI;
+      scaleCenterX = width;
+      scaleCenterY = height / 2;
+      needleLength = width;
+      labelY = height / 2;
+    }
+    else if (height > width && this.antiClockwise) {
+      scaleZero = 2.25 * Math.PI;
+      scaleFull = 1.75 * Math.PI;
+      scaleCenterX = 0;
+      scaleCenterY = height / 2;
+      needleLength = width;
       labelY = height / 2;
     }
 
@@ -53,7 +81,7 @@ class AnalogGauge {
     context.lineWidth = 3;
     context.fillStyle = 'white';
     context.strokeStyle = 'lightgray';
-    context.arc(scaleCenterX, scaleCenterY, 0.9 * needleLength, scaleZero, scaleFull);
+    context.arc(scaleCenterX, scaleCenterY, 0.9 * needleLength, scaleZero, scaleFull, this.antiClockwise);
     context.fill();
     context.stroke();
 
@@ -74,10 +102,12 @@ class AnalogGauge {
     context.lineTo(scaleCenterX + needleLength * Math.cos(radians), scaleCenterY + needleLength * Math.sin(radians));
     context.stroke();
 
-    // Cap the needle.
+    // Cover the needle with a proportionally-sized cap.
+    let capRadius = Math.max(Math.round(needleLength / 20), 4);
     context.beginPath();
     context.strokeStyle = 'black';
-    context.arc(scaleCenterX, scaleCenterY, 5, 0, 2 * Math.PI);
+    context.fillStyle = 'black';
+    context.arc(scaleCenterX, scaleCenterY, capRadius, 0, 2 * Math.PI);
     context.stroke();
     context.fill();
   }
