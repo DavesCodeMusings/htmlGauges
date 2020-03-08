@@ -7,6 +7,7 @@
   <meta charset="utf-8">
   <style>
     body {
+      font-family: sans-serif;
       margin-left: auto;
       margin-right: auto;
       max-width: 768px;
@@ -40,11 +41,15 @@
   <main>
     <h2>Automobile Gauges</h2>
     <p>Vehicle is idling at 800 RPM and goes through 5 gears as it accelerates to 100 MPH.</p>
+    <canvas id="temp" height=100 width=50></canvas>
     <canvas id="tachometer" height="200px" width="200px"></canvas>
     <canvas id="speedometer" height="200px" width="200px"></canvas>
+    <canvas id="fuel" height=100 width=50></canvas>
     <script>
+      var temp = new AnalogGauge('temp', 'Temp', 0.4);
       tachometer = new AnalogGauge('tachometer', 'RPM x1000', 0.1);  // Idling revs of 800 on a 0-8000 scale.
       speedometer = new AnalogGauge('speedometer', 'MPH', 0);
+      var fuel = new AnalogGauge('fuel', 'Fuel', 0.7, true);
     </script>
     <form>
       <input id="go"
@@ -78,6 +83,27 @@
         onchange="let vu=document.getElementById('hifiSpinner').value; vuLeft.draw(vu/100); vuRight.draw(vu/100);"
         type="number" min=0 max=100 step=1 value=0>
     </form>
+
+    <h2>Portrait-Style Gauges and Anti-Clockwise Movement</h2>
+    <p>The Fuel gauge moves in an anti-clockwise direction as the fuel level increases.</p>
+    <canvas id="temp2" height=100 width=50></canvas>
+    <canvas id="mph" height=150 width=150></canvas>
+    <canvas id="fuel2" height=100 width=50></canvas>
+    <script>
+      var temp2 = new AnalogGauge('temp2', 'Temp', 0.4);
+      var mph = new AnalogGauge('mph', 'MPH', 0.8);
+      var fuel2 = new AnalogGauge('fuel2', 'Fuel', 0.7, true);
+    </script>
+
+    <h2>Landscape-Style Gauges and Anti-Clockwise Movement</h2>
+    <p>The Radiation gauge moves in an anti-clockwise direction as the level of radiation increases.</p>
+    <canvas id="godzilla" height=100 width=200 style="border: 1px solid black;"></canvas>
+    <br>
+    <canvas id="radiation" height=100 width=200 style="border: 1px solid black;"></canvas>
+    <script>
+      var godzilla = new AnalogGauge('godzilla', 'Godzilla Probability', 0.75);
+      var radiation = new AnalogGauge('radiation', 'Radiation', 0.75, true);
+    </script>
   </main>
 
   <aside>
