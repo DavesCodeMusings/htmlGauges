@@ -28,7 +28,7 @@ class AnalogGauge {
     let context = document.getElementById(this.canvasId).getContext("2d");
     let height = document.getElementById(this.canvasId).height;
     let width = document.getElementById(this.canvasId).width;
-    let scaleZero, scaleFull, scaleCenterX, scaleCenterY, needleLength, labelY = 0;
+    let scaleZero, scaleFull, scaleCenterX, scaleCenterY, radius, labelY = 0;
 
     // Square canvas gets a big round gauge. Rectangles get half.
     if (height === width) {
@@ -36,15 +36,15 @@ class AnalogGauge {
       scaleFull = 2.25 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = height / 2;
-      needleLength = 0.95 * (height / 2);
-      labelY = height * 0.75;
+      radius = height / 2;
+      labelY = height * 0.85;
     }
     else if (height < width && !this.antiClockwise) {
       scaleZero = 1.25 * Math.PI;
       scaleFull = 1.75 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = height;
-      needleLength = 0.95* height;
+      radius = height;
       labelY = height / 2;
     }
     else if (height < width && this.antiClockwise) {
@@ -52,7 +52,7 @@ class AnalogGauge {
       scaleFull = 0.25 * Math.PI;
       scaleCenterX = width / 2;
       scaleCenterY = 0;
-      needleLength = 0.95 * height;
+      radius = height;
       labelY = height / 2;
     }
     else if (height > width && !this.antiClockwise) {
@@ -60,7 +60,7 @@ class AnalogGauge {
       scaleFull = 1.25 * Math.PI;
       scaleCenterX = width;
       scaleCenterY = height / 2;
-      needleLength = 0.95 * width;
+      radius = width;
       labelY = height / 2;
     }
     else if (height > width && this.antiClockwise) {
@@ -68,26 +68,33 @@ class AnalogGauge {
       scaleFull = 1.75 * Math.PI;
       scaleCenterX = 0;
       scaleCenterY = height / 2;
-      needleLength = 0.95 * width;
+      radius = width;
       labelY = height / 2;
     }
 
-    // Clear the canvas.
+    // Clear the canvas and draw the face.
     context.clearRect(0, 0, width, height);
+    context.beginPath();
+    context.lineWidth = 1;
+    context.fillStyle = 'white';
+    context.strokeStyle = 'lightgray';
+    context.arc(scaleCenterX, scaleCenterY, radius, 0, 2*Math.PI);
+    context.fill();
+    context.stroke();
 
     // Draw the scale.
     context.beginPath();
     context.lineWidth = 3;
     context.fillStyle = 'white';
     context.strokeStyle = 'lightgray';
-    context.arc(scaleCenterX, scaleCenterY, 0.9 * needleLength, scaleZero, scaleFull, this.antiClockwise);
+    context.arc(scaleCenterX, scaleCenterY, 0.8 * radius, scaleZero, scaleFull, this.antiClockwise);
     context.fill();
     context.stroke();
 
     // Label it.
     context.beginPath();
     context.fillStyle = 'black';
-    context.textBaseline = 'middle';
+    context.textBaseline = 'bottom';
     context.textAlign = 'center';
     context.fillText(this.label, width / 2, labelY);
 
@@ -98,11 +105,11 @@ class AnalogGauge {
     context.strokeStyle = 'red';
     context.lineCap = 'round';
     context.moveTo(scaleCenterX, scaleCenterY);
-    context.lineTo(scaleCenterX + needleLength * Math.cos(radians), scaleCenterY + needleLength * Math.sin(radians));
+    context.lineTo(scaleCenterX + 0.9 * radius * Math.cos(radians), scaleCenterY + 0.9 * radius * Math.sin(radians));
     context.stroke();
 
     // Cover the needle with a proportionally-sized cap.
-    let capRadius = Math.max(Math.round(needleLength / 20), 4);
+    let capRadius = Math.max(Math.round(radius / 20), 4);
     context.beginPath();
     context.strokeStyle = 'black';
     context.fillStyle = 'black';
