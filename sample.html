@@ -25,7 +25,9 @@
     }
 
   </style>
-  <script src="../js/htmlGauges.js"></script>
+  <script src="../js/Rounded270Gauge.js"></script>
+  <script src="../js/Rounded90Gauge.js"></script>
+  <script src="../js/LinearGauge.js"></script>
   <script>
     // Make these global for the start/stop functions.
     var automobileInterval = null;
@@ -58,10 +60,10 @@
     <canvas id="speedometer" height="200px" width="200px"></canvas>
     <canvas id="fuel" height=100 width=50></canvas>
     <script>
-      var temp = new AnalogGauge('temp', 'Temp', 0.4);
-      tachometer = new AnalogGauge('tachometer', 'RPM x1000', 0.1);  // Idling revs of 800 on a 0-8000 scale.
-      speedometer = new AnalogGauge('speedometer', 'MPH', 0);
-      var fuel = new AnalogGauge('fuel', 'Fuel', 0.7, true);
+      var temp = new Rounded90Gauge('temp', 'Temp', 0.4, true);
+      var tachometer = new Rounded270Gauge('tachometer', 'RPM x1000', 0.1, true);  // Idling revs of 800 on a 0-8000 scale.
+      var speedometer = new Rounded270Gauge('speedometer', 'MPH', 0, true);
+      var fuel = new Rounded90Gauge('fuel', 'Fuel', 0.7, true, true);
     </script>
     <form>
       <input id="go"
@@ -81,8 +83,8 @@
     <canvas id="vu-left" height="100px" width="200px" style="border: 1px solid black;"></canvas>
     <canvas id="vu-right" height="100px" width="200px" style="border: 1px solid black;"></canvas>
     <script>
-      var vuLeft = new AnalogGauge('vu-left', 'VU Left', 0);
-      var vuRight = new AnalogGauge('vu-right', 'VU Right', 0);
+      var vuLeft = new Rounded90Gauge('vu-left', 'VU Left', 0);
+      var vuRight = new Rounded90Gauge('vu-right', 'VU Right', 0);
     </script>
     <form>
       <input id="go"
@@ -102,9 +104,9 @@
     <canvas id="mph" height=150 width=150></canvas>
     <canvas id="fuel2" height=100 width=50></canvas>
     <script>
-      var temp2 = new AnalogGauge('temp2', 'Temp', 0.4);
-      var mph = new AnalogGauge('mph', 'MPH', 0.8);
-      var fuel2 = new AnalogGauge('fuel2', 'Fuel', 0.7, true);
+      var temp2 = new Rounded90Gauge('temp2', 'Temp', 0.4);
+      var mph = new Rounded270Gauge('mph', 'MPH', 0.8);
+      var fuel2 = new Rounded90Gauge('fuel2', 'Fuel', 0.7, false, true);
     </script>
 
     <h2>Landscape-Style Gauges and Anti-Clockwise Movement</h2>
@@ -113,8 +115,8 @@
     <br>
     <canvas id="radiation" height=100 width=200 style="border: 1px solid black;"></canvas>
     <script>
-      var godzilla = new AnalogGauge('godzilla', 'Godzilla Probability', 0.75);
-      var radiation = new AnalogGauge('radiation', 'Radiation', 0.75, true);
+      var godzilla = new Rounded90Gauge('godzilla', 'Radiation Level', 0.75);
+      var radiation = new Rounded90Gauge('radiation', 'Godzilla Probability', 0.75, false, true);
     </script>
 
     <h2>Linear Gauges</h2>
@@ -122,7 +124,7 @@
     <canvas id="sig-strength" height=75 width=100 style="border: 1px solid black;"></canvas>
     <canvas id="fm" height=75 width=600 style="border: 1px solid black;"></canvas>
     <script>
-      new AnalogGauge('sig-strength', 'Signal', 0.85);
+      new Rounded90Gauge('sig-strength', 'Signal', 0.85, false, true);
       new LinearGauge('fm', 'FM (MHz)', 0.67);
     </script>
   </main>

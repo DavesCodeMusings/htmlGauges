@@ -7,7 +7,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="style.css" rel="stylesheet" type="text/css">
-  <script src="htmlGauges.js"></script>
+  <script src="Rounded270Gauge.js"></script>
+  <script src="Rounded90Gauge.js"></script>
+  <script src="LinearGauge.js"></script>
 </head>
 
 <body>
@@ -16,9 +18,9 @@
       height=200 width=200></canvas>
     <p><b>HTML Gauges &mdash; Analog gauges guaranteed to take any web page up to eleven.</b></p>
     <script>
-      new AnalogGauge('boost', 'Boost', 0.95);
-      new AnalogGauge('rpm', 'RPM x1000', 0.65);
-      new AnalogGauge('mph', 'MPH', 0.80);
+      new Rounded270Gauge('boost', 'Boost', 0.95, true);
+      new Rounded270Gauge('rpm', 'RPM x1000', 0.65, true);
+      new Rounded270Gauge('mph', 'MPH', 0.80, true);
     </script>
   </header>
   <nav>
@@ -48,8 +50,8 @@
     <canvas id="sigStrength" height=50 width=100 style="border: 1px solid black;"></canvas>
     <canvas id="tuning" height="50" width=500 style="border: 1px solid black;"></canvas>
     <script>
-      new AnalogGauge('sigCenter', 'Tuning', 0.50, true);
-      new AnalogGauge('sigStrength', 'Signal', 0.85, true);
+      new Rounded90Gauge('sigCenter', 'Tuning', 0.50, false, true);
+      new Rounded90Gauge('sigStrength', 'Signal', 0.85, false, true);
       new LinearGauge('tuning', 'FM MHz', 0.75);
     </script>
     <p><i>Fig 1 &mdash; Simulating an old, analog FM tuner.</i></p>
@@ -61,8 +63,8 @@
       <li>Copy the htmlGauges.js JavaScript file to your site and link it with a script tag in the page header.</li>
       <li>Create a canvas element with the dimensions that you want for your analog gauge and give it an id attribute.
       </li>
-      <li>Use JavaScript to create a new instance of AnalogGauge, giving it the id of the canvas as a parameter.
-        (Optionally supply a label and initial value.)</li>
+      <li>Use JavaScript to create a new instance of one of the gauges, giving it the id of the canvas as a parameter.
+        (Optionally supply a label and initial needle deflection value.)</li>
       <li>Call the draw() method with a number between 0 and 1 to move the indicator needle between zero and full-scale
         deflection.</li>
     </ol>
@@ -70,21 +72,20 @@
     <pre>
       ...
       &lt;head&gt;
-      &lt;script src='htmlGauges.js'&gt;&lt;/script&gt;
+      &lt;script src='Rounded270Gauge.js'&gt;&lt;/script&gt;
       ...
       &lt;body&gt;
       &lt;canvas id='thermometerCanvas' height=100 width=100&gt;
-      &lt;script&gt;thermometerGauge = new AnalogGauge('thermometerCanvas', 'Temperature', 0.33);&lt;script&gt;
+      &lt;script&gt;thermometerGauge = new Rounded270Gauge('thermometerCanvas', 'Temperature', 0.33);&lt;script&gt;
       ...
       &lt;button onclick='thermometerGauge.draw(0.67);'&gt;Heat it up.&lt;button&gt;
       ...
     </pre>
-    <p>Adjust the canvas dimensions and the gauge will change shape to fit. Square canvases always get a round, 270
-      degree deflection gauge. Canvases that are not square, either taller than wide or wider than tall, will draw a
-      gauge with 90 degrees of deflection. Supplying an anti-clockwise parameter of true will flip the gauge's
-      orientation, to right-facing or bottom-facing, and change needle movement to match.
+    <p>The available types of gauges are Round270, Round90, and Linear.  Round270Gauge requires a square canvas,
+      Rounded90Gauge looks best on a 2:1 ratio rectangle, with either portrait or landscape orientation.  LinearGauge
+      is at home on a rectanglular canvas with a ratio of 3:1 or higher.
     </p>
-    <p>That's all there is to it.</p>
+    <p>Just include the file you need, create a canvas, and apply the gauge. That's all there is to it.</p>
 
     <h2>What's next?</h2>
     <p>
