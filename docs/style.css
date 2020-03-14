@@ -7,7 +7,7 @@ body, header, footer {
     font-family: sans-serif;
 }
 header, footer {
-    background: white;
+    background: whitesmoke;
     color: red;
 }
 a {

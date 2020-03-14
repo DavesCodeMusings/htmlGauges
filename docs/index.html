@@ -33,28 +33,47 @@
 
   <main>
     <h2>About</h2>
-    <p>The HTML Gauges project came about when I started working on the WeeNAS system dashboard. It seems all the cool
-      kids are using analog gauges to give a visual representation of system data. I'm sure there are other libraries
-      out there that do the same thing as HTML Gauges, and maybe even do a better job of it, but I'm the type of person
-      who would rather write my own code than cobble together other peoples.</p>
+    <p>
+      HTML Gauges is a collection of JavaScript classes that draw and update analog dial-type gauges on an HTML 5
+      canvas. The class files each draw a unique type of gauge. Gauges can then be updated using their draw() method
+      whenever a value changes.
+    </p>
 
     <h2>What can it do?</h2>
-    <p>
-      HTML Gauges is a JavaScript class that can draw and update analog dial-type gauges on an HTML 5 canvas. It will
-      use the aspect ratio of the canvas to determine how to draw the gauge. A square canvas, where height and width
-      are equal, gets a big round gauge with 270 degrees of zero to full scale needle deflection. Examples of these
-      can be seen at the top of this web page. For canvases of rectangular aspect ratio, the gauge rendering will be a
-      smaller 90 degree deflection to represent full scale. See the example below.
+    <p>The available types of gauges are Rounded270Gauge, Rounded90Gauge, and LinearGauge. Rounded270Gauge requires
+      a square canvas, Rounded90Gauge looks best on a 2:1 ratio rectangle, with either portrait or landscape
+      orientation. LinearGauge is at home on a rectanglular canvas with a ratio of 3:1 or higher.
     </p>
-    <canvas id="sigCenter" height=50, width=100 style="border: 1px solid black;"></canvas>
-    <canvas id="sigStrength" height=50 width=100 style="border: 1px solid black;"></canvas>
-    <canvas id="tuning" height="50" width=500 style="border: 1px solid black;"></canvas>
-    <script>
-      new Rounded90Gauge('sigCenter', 'Tuning', 0.50, false, true);
-      new Rounded90Gauge('sigStrength', 'Signal', 0.85, false, true);
-      new LinearGauge('tuning', 'FM MHz', 0.75);
-    </script>
-    <p><i>Fig 1 &mdash; Simulating an old, analog FM tuner.</i></p>
+    <p>
+      A few examples are shown on this page. There is also a sample.html file that shows more combinations of options
+      that allow gauges to appear with or without a border, portrait-style or landscape, and even with anti-clockwise
+      needle deflection.
+    </p>
+    <div>
+      <canvas id="sigCenter" height=50, width=100 style="border: 1px solid black;"></canvas>
+      <canvas id="sigStrength" height=50 width=100 style="border: 1px solid black;"></canvas>
+      <canvas id="tuning" height="50" width=500 style="border: 1px solid black;"></canvas>
+      <script>
+        new Rounded90Gauge('sigCenter', 'Tuning', 0.50, false, true);
+        new Rounded90Gauge('sigStrength', 'Signal', 0.85, false, true);
+        new LinearGauge('tuning', 'FM MHz', 0.75);
+      </script>
+      <p><i>Fig 1 &mdash; Simulating an old, analog FM tuner.</i></p>
+    </div>
+    <div>
+      <canvas id="temp" height=100 width=50></canvas>
+      <canvas id="tachometer" height="200px" width="200px"></canvas>
+      <canvas id="speedometer" height="200px" width="200px"></canvas>
+      <canvas id="fuel" height=100 width=50></canvas>
+      <script>
+        var temp = new Rounded90Gauge('temp', 'Temp', 0.4, true);
+        var tachometer = new Rounded270Gauge('tachometer', 'RPM x1000', 0.1, true);  // Idling revs of 800 on a 0-8000 scale.
+        var speedometer = new Rounded270Gauge('speedometer', 'MPH', 0, true);
+        var fuel = new Rounded90Gauge('fuel', 'Fuel', 0.7, true, true);
+      </script>
+      <form>
+      <p><i>Fig 2 &mdash; An automobile instrument cluster.</i></p>  
+    </div>
     <h2>Using HTML Gauges</h2>
     <p>
       Using HTML Gauges to take your own web page up to eleven is relatively simple.
@@ -81,18 +100,14 @@
       &lt;button onclick='thermometerGauge.draw(0.67);'&gt;Heat it up.&lt;button&gt;
       ...
     </pre>
-    <p>The available types of gauges are Round270, Round90, and Linear.  Round270Gauge requires a square canvas,
-      Rounded90Gauge looks best on a 2:1 ratio rectangle, with either portrait or landscape orientation.  LinearGauge
-      is at home on a rectanglular canvas with a ratio of 3:1 or higher.
-    </p>
     <p>Just include the file you need, create a canvas, and apply the gauge. That's all there is to it.</p>
 
     <h2>What's next?</h2>
     <p>
-      Numeric labels on the scale, at least at the endpoints, but ideally at evenly spaced locations if desired.  This
-      will probably result in restructuring the constructor parameters as 
+      Numeric labels on the scale, at least at the endpoints, but ideally at evenly spaced locations if desired. This
+      will probably result in restructuring the constructor parameters as
       <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">rest
-      parameters</a>, making the first string (canvasId) required, and interpreting any following strings as the gauge
+        parameters</a>, making the first string (canvasId) required, and interpreting any following strings as the gauge
       label followed by labels to be placed on the scale at end points and equal intervals between.
     </p>
   </main>
